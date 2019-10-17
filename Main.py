@@ -19,4 +19,6 @@ while numRainhas < dimensao:
 
 os.system('cls' if os.name == 'nt' else 'clear')
 newTabuleiro.printTabuleiro()
-print(func.f(newTabuleiro))
+# print(func.f(newTabuleiro))
+s = SimulatedAnnealing(newTabuleiro,50,90)
+s.execute(func.f)
