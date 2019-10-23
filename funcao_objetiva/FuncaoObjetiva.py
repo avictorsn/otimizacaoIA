@@ -9,37 +9,34 @@ def f(tabuleiro: Tabuleiro):
     
     ### verificação de ataques
     
-    for rainha in range(len(tabuleiro.rainhas)):
-        ataqueHorizontalDireita = False
-        ataqueDiagEsqSup = False
-        ataqueDiagDirSup = False
-        linhaRainha = tabuleiro.rainhas[rainha][0]
-        colunaRainha = tabuleiro.rainhas[rainha][1]
-        #horizontal pela direita
-        for coluna in range(tabuleiro.dimensao):
-            if(coluna!= colunaRainha):
-                if(tabuleiro.posicoes[linhaRainha][coluna] == 'Q' and not ataqueHorizontalDireita):
-                    numAtaques+=1
-                    ataqueHorizontalDireita = True
+    for rainha in tabuleiro.rainhas:
+        #ataque horizontal
+        for outraRainha in tabuleiro.rainhas:
+            if outraRainha[0] == rainha[0] and rainha != outraRainha:
+                numAtaques += 1
+            #ataque diagonal esquerda superior
+            if outraRainha[1] < rainha[1] and outraRainha[0] < rainha[0]:
+                distanciaColuna = abs(rainha[1]-outraRainha[1])
+                linhaDeAtaque = rainha[0]-distanciaColuna
+                if linhaDeAtaque >= 0 and linhaDeAtaque == outraRainha[0]:
+                    numAtaques += 1
+            # ataque diagonal esquerda inferior
+            if outraRainha[1] < rainha[1] and outraRainha[0] > rainha[0]:
+                distanciaColuna = abs(rainha[1] - outraRainha[1])
+                linhaDeAtaque = rainha[0] + distanciaColuna
+                if linhaDeAtaque >= 0 and linhaDeAtaque == outraRainha[0]:
+                    numAtaques += 1
+            #ataque diagonal direita superior
+            if outraRainha[1] > rainha[1] and outraRainha[0] < rainha[0]:
+                distanciaColuna = abs(rainha[1]-outraRainha[1])
+                linhaDeAtaque = rainha[0]-distanciaColuna
+                if linhaDeAtaque >= 0 and linhaDeAtaque == outraRainha[0]:
+                    numAtaques += 1
+            # ataque diagonal direita inferior
+            if outraRainha[1] > rainha[1] and outraRainha[0] > rainha[0]:
+                distanciaColuna = abs(rainha[1] - outraRainha[1])
+                linhaDeAtaque = rainha[0] + distanciaColuna
+                if linhaDeAtaque >= 0 and linhaDeAtaque == outraRainha[0]:
+                    numAtaques += 1
 
-        ### Falta corrigir o erro de contabilizar duas vezes o mesmo ataque ###
-        #verificação diagonal direita superior
-        if(linhaRainha > 0 and colunaRainha < tabuleiro.dimensao):
-            for linha in range(linhaRainha-1, -1, -1):
-                for coluna in range(colunaRainha+1, tabuleiro.dimensao):
-                    if(tabuleiro.posicoes[linha][coluna] == 'Q' and not ataqueDiagDirSup):
-                        numAtaques+=1
-                        coluna = tabuleiro.dimensao
-                        ataqueDiagDirSup = True
-
-        #verificação diagonal esquerda superior
-        if(linhaRainha > 0 and colunaRainha < tabuleiro.dimensao):
-            for linha in range(linhaRainha-1, -1, -1):
-                for coluna in range(colunaRainha-1, -1, -1):
-                    if(tabuleiro.posicoes[linha][coluna] == 'Q' and not ataqueDiagEsqSup):
-                        numAtaques+=1
-                        coluna = tabuleiro.dimensao
-                        ataqueDiagEsqSup = True
-                
-    
-    return numAtaques
+    return numAtaques/2
