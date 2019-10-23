@@ -24,12 +24,14 @@ class SimulatedAnnealing:
     # Gerar uma configuração aleatória descendente de uma dada configuração
     def configuracaoSucessoraAleatoria(self, tabuleiro=Tabuleiro, listaRainhas=list):
         colunaRainhaAlterada = random.randint(0,len(listaRainhas)-1)
-        novaLinha = random.randint(0,tabuleiro.dimensao-1)
         print('posição a ser alterada é da rainha de coluna ', (colunaRainhaAlterada+1))
         for i in range(tabuleiro.dimensao):
             if listaRainhas[i][1] != colunaRainhaAlterada:
                 tabuleiro.setRainha(listaRainhas[i][0], listaRainhas[i][1])
             else:
+                novaLinha = random.randint(0,tabuleiro.dimensao-1)
+                while novaLinha == listaRainhas[i][0]:
+                    novaLinha = random.randint(0,tabuleiro.dimensao-1)
                 tabuleiro.setRainha(novaLinha, colunaRainhaAlterada)
         return tabuleiro
 

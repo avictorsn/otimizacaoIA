@@ -4,6 +4,8 @@ from tabuleiro.Tabuleiro import Tabuleiro
 import funcao_objetiva.FuncaoObjetiva as func
 import os
 
+
+
 dimensao = int(input('Digite a dimensão do tabuleiro (exemplo: 2 -> 2x2):'))
 
 newTabuleiro = Tabuleiro(dimensao)
@@ -19,9 +21,21 @@ while numRainhas < dimensao:
     numRainhas += 1
 
 os.system('cls' if os.name == 'nt' else 'clear')
-newTabuleiro.printTabuleiro()
-print(func.f(newTabuleiro))
-#s = SimulatedAnnealing(newTabuleiro, 50, 100)
-#s.execute(func.f)
-a = AlgoritmoGenetico(newTabuleiro, 200, 100, 50, dimensao)
-a.execute()
+metodo = int(input("Digite 1 para 'Simulated Annealing' ou 2 para 'Algoritmo Genético': "))
+
+if metodo == 1:
+    os.system('cls' if os.name == 'nt' else 'clear')
+    newTabuleiro.printTabuleiro()
+    # print(func.f(newTabuleiro))
+    s = SimulatedAnnealing(newTabuleiro, 50, 100)
+    s.execute(func.f)
+elif metodo == 2:
+    os.system('cls' if os.name == 'nt' else 'clear')
+    newTabuleiro.printTabuleiro()
+    # print(func.f(newTabuleiro))
+    a = AlgoritmoGenetico(newTabuleiro, 200, 100, 50, dimensao)
+    a.execute()
+else:
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print('Escolha inválida')
+
