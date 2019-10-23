@@ -1,38 +1,45 @@
 from tabuleiro.Tabuleiro import Tabuleiro
 
+#Função que avalia quantos ataques tem uma configuração de entrada
 def f(tabuleiro: Tabuleiro):
     numAtaques = 0
-    ataqueHorizontal = False
+    ataqueHorizontalDireita = False
     ataqueDiagDirSup = False
     dimensaoPar = (tabuleiro.dimensao%2==0)
-    #verificação horizontal
+    
+    ### verificação de ataques
+    
     for rainha in range(len(tabuleiro.rainhas)):
-        ataqueHorizontal = False
+        ataqueHorizontalDireita = False
+        ataqueDiagEsqSup = False
         ataqueDiagDirSup = False
-        # print('Rainha ', rainha+1)
         linhaRainha = tabuleiro.rainhas[rainha][0]
         colunaRainha = tabuleiro.rainhas[rainha][1]
+        #horizontal pela direita
         for coluna in range(tabuleiro.dimensao):
             if(coluna!= colunaRainha):
-                if(tabuleiro.posicoes[linhaRainha][coluna] == 'Q' and not ataqueHorizontal):
-                    # print('horizontal')
-                    # print('linha ', linhaRainha, ' coluna ', coluna, ' está atacando a Rainha', rainha+1)
+                if(tabuleiro.posicoes[linhaRainha][coluna] == 'Q' and not ataqueHorizontalDireita):
                     numAtaques+=1
-                    ataqueHorizontal = True
+                    ataqueHorizontalDireita = True
 
         ### Falta corrigir o erro de contabilizar duas vezes o mesmo ataque ###
         #verificação diagonal direita superior
         if(linhaRainha > 0 and colunaRainha < tabuleiro.dimensao):
-            if(True):
-                for linha in range(linhaRainha-1, -1, -1):
-                    for coluna in range(colunaRainha+1, tabuleiro.dimensao):
-                        # print(linha, '; ', coluna)
-                        if(tabuleiro.posicoes[linha][coluna] == 'Q' and not ataqueDiagDirSup):
-                            # print('diagonal direita superior')
-                            # print('linha ', linhaRainha, ' coluna ', coluna, ' está atacando a Rainha', rainha+1)
-                            numAtaques+=1
-                            coluna = tabuleiro.dimensao
-                            ataqueDiagDirSup = True
+            for linha in range(linhaRainha-1, -1, -1):
+                for coluna in range(colunaRainha+1, tabuleiro.dimensao):
+                    if(tabuleiro.posicoes[linha][coluna] == 'Q' and not ataqueDiagDirSup):
+                        numAtaques+=1
+                        coluna = tabuleiro.dimensao
+                        ataqueDiagDirSup = True
+
+        #verificação diagonal esquerda superior
+        if(linhaRainha > 0 and colunaRainha < tabuleiro.dimensao):
+            for linha in range(linhaRainha-1, -1, -1):
+                for coluna in range(colunaRainha-1, -1, -1):
+                    if(tabuleiro.posicoes[linha][coluna] == 'Q' and not ataqueDiagEsqSup):
+                        numAtaques+=1
+                        coluna = tabuleiro.dimensao
+                        ataqueDiagEsqSup = True
                 
     
     return numAtaques
