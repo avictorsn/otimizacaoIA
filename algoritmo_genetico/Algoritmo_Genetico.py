@@ -130,6 +130,18 @@ class AlgoritmoGenetico:
                     indice = np.random.randint(tamanho)
                     return faixa1[indice]
 
+    def mutacao(self, child):
+        ### a taxa de mutação deve ser entrada com valor entre 0 e 1
+        chanceMutacao = random.uniform(0,1)
+        alterou = False
+        if chanceMutacao >= self.taxaMutacao:
+            while not alterou:
+                geneAleatorio = random.randint(0, self.tamanhoTabuleiro-1)
+                valorAleatorio = random.randint(0, self.tamanhoTabuleiro-1)
+                if child[0][geneAleatorio] != valorAleatorio:
+                    child[0][geneAleatorio] = valorAleatorio
+                    alterou = True
+
     def sortSecond(self, val):
         return val[1]
 
@@ -146,9 +158,11 @@ class AlgoritmoGenetico:
                         break
                 child = self.reproduzCromossomo(x, y)
                 # Implementar mutação aqui
+                self.mutacao(child)
                 nova_populacao.append(child)
             atualPopulacao = copy.deepcopy(nova_populacao)
             atualPopulacao.sort(key=self.sortSecond)
         self.printMelhoresPopulacao()
 
         print("yay")
+        
