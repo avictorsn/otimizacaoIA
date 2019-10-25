@@ -6,7 +6,7 @@ import os
 
 
 
-dimensao = int(input('Digite a dimensão do tabuleiro (exemplo: 2 -> 2x2): '))
+dimensao = int(input('Digite a dimensão do tabuleiro (exemplo: 4 -> 4x4): '))
 
 newTabuleiro = Tabuleiro(dimensao)
 

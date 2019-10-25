@@ -21,12 +21,11 @@ class AlgoritmoGenetico:
         print("MELHORES TABULEIROS")
         for i,cromossomo in enumerate(self.populacao):
             novoTabuleiro = Tabuleiro(self.tamanhoTabuleiro)
-            if i == 5:
-                break
-            for j, cromo in enumerate(cromossomo[0]):
-                novoTabuleiro.setRainha(cromo, j)
-            print("Tabuleiro ", i)
-            novoTabuleiro.printTabuleiro()
+            if cromossomo[1] == 0:
+                for j, cromo in enumerate(cromossomo[0]):
+                    novoTabuleiro.setRainha(cromo, j)
+                print("Tabuleiro ", i)
+                novoTabuleiro.printTabuleiro()
 
     def criaCromossomo(self):
         rainhas = np.arange(self.tamanhoTabuleiro)
@@ -47,7 +46,8 @@ class AlgoritmoGenetico:
         else:
             paridade = 1
         if paridade == 0:
-            auxReproducao = self.tamanhoTabuleiro % 2
+            auxReproducao = int(self.tamanhoTabuleiro/2)
+            print(auxReproducao)
             # gerando filho1
             for i in range(auxReproducao):
                 filho1.append(x[i])
@@ -55,6 +55,25 @@ class AlgoritmoGenetico:
                 filho1.append(y[j])
             # gerando filho2
             for i in range(auxReproducao):
+                filho2.append(y[i])
+            for j in range(auxReproducao, self.tamanhoTabuleiro):
+                filho2.append(x[j])
+            nota1 = self.avaliarCromossomo(filho1)
+            nota2 = self.avaliarCromossomo(filho2)
+            if nota1 < nota2:
+                return (filho1, nota1)
+            else:
+                return (filho2, nota2)
+        else:
+            auxReproducao = int((self.tamanhoTabuleiro-1)/2)
+            print("paridade 1: ", auxReproducao)
+            # gerando filho1
+            for i in range(auxReproducao+1):
+                filho1.append(x[i])
+            for j in range(auxReproducao, self.tamanhoTabuleiro):
+                filho1.append(y[j])
+            # gerando filho2
+            for i in range(auxReproducao+1):
                 filho2.append(y[i])
             for j in range(auxReproducao, self.tamanhoTabuleiro):
                 filho2.append(x[j])
@@ -90,9 +109,9 @@ class AlgoritmoGenetico:
                 if umQuarto <= i < (umQuarto * 2):
                     faixa2.append(cromo[0])
                 if (umQuarto * 2) <= i < (umQuarto * 3):
-                    faixa2.append(cromo[0])
+                    faixa3.append(cromo[0])
                 if (umQuarto * 3) <= i < (umQuarto * 4):
-                    faixa2.append(cromo[0])
+                    faixa4.append(cromo[0])
         else:
             umQuarto = (self.maxPopulacao + 1) / 4
             for i, cromo in enumerate(self.populacao):
@@ -101,11 +120,11 @@ class AlgoritmoGenetico:
                 if umQuarto <= i < (umQuarto * 2):
                     faixa2.append(cromo[0])
                 if (umQuarto * 2) <= i < (umQuarto * 3):
-                    faixa2.append(cromo[0])
+                    faixa3.append(cromo[0])
                 if (umQuarto * 3) <= i < (umQuarto * 4):
-                    faixa2.append(cromo[0])
+                    faixa4.append(cromo[0])
                 if i == umQuarto * 4 - 1:
-                    faixa2.append(cromo[0])
+                    faixa4.append(cromo[0])
         while 1:
             dado_100_faces = np.random.randint(1, 100)
 
@@ -134,7 +153,7 @@ class AlgoritmoGenetico:
         ### a taxa de mutação deve ser entrada com valor entre 0 e 1
         chanceMutacao = random.uniform(0,1)
         alterou = False
-        if chanceMutacao >= self.taxaMutacao:
+        if chanceMutacao <= self.taxaMutacao:
             while not alterou:
                 geneAleatorio = random.randint(0, self.tamanhoTabuleiro-1)
                 valorAleatorio = random.randint(0, self.tamanhoTabuleiro-1)
@@ -154,7 +173,7 @@ class AlgoritmoGenetico:
                 x = self.selecao_aleatoria_ponderada()
                 while 1:
                     y = self.selecao_aleatoria_ponderada()
-                    if y != x:
+                    if y[0] != x[0]:
                         break
                 child = self.reproduzCromossomo(x, y)
                 # Implementar mutação aqui
