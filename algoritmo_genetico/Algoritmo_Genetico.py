@@ -26,6 +26,14 @@ class AlgoritmoGenetico:
                     novoTabuleiro.setRainha(cromo, j)
                 print("Tabuleiro ", i)
                 novoTabuleiro.printTabuleiro()
+    
+    def printMelhor(self):
+        melhor = self.populacao[0]
+        novoTabuleiro = Tabuleiro(self.tamanhoTabuleiro)
+        for j, cromo in enumerate(melhor[0]):
+            novoTabuleiro.setRainha(cromo, j)
+        novoTabuleiro.printTabuleiro()
+        print('Ataques: ', melhor[1])
 
     def criaCromossomo(self):
         rainhas = np.arange(self.tamanhoTabuleiro)
@@ -47,7 +55,6 @@ class AlgoritmoGenetico:
             paridade = 1
         if paridade == 0:
             auxReproducao = int(self.tamanhoTabuleiro/2)
-            print(auxReproducao)
             # gerando filho1
             for i in range(auxReproducao):
                 filho1.append(x[i])
@@ -66,16 +73,15 @@ class AlgoritmoGenetico:
                 return (filho2, nota2)
         else:
             auxReproducao = int((self.tamanhoTabuleiro-1)/2)
-            print("paridade 1: ", auxReproducao)
             # gerando filho1
             for i in range(auxReproducao+1):
                 filho1.append(x[i])
-            for j in range(auxReproducao, self.tamanhoTabuleiro):
+            for j in range(auxReproducao+1, self.tamanhoTabuleiro):
                 filho1.append(y[j])
             # gerando filho2
             for i in range(auxReproducao+1):
                 filho2.append(y[i])
-            for j in range(auxReproducao, self.tamanhoTabuleiro):
+            for j in range(auxReproducao+1, self.tamanhoTabuleiro):
                 filho2.append(x[j])
             nota1 = self.avaliarCromossomo(filho1)
             nota2 = self.avaliarCromossomo(filho2)
@@ -168,7 +174,10 @@ class AlgoritmoGenetico:
         nova_populacao = []
         atualPopulacao = self.populacao
         atualPopulacao.sort(key=self.sortSecond)
+        numGeracoes = 1
         while atualPopulacao[0][1] != 0:
+            print("Geração ", numGeracoes)
+            self.printMelhor()
             for i in range(self.maxPopulacao):
                 x = self.selecao_aleatoria_ponderada()
                 while 1:
@@ -181,6 +190,7 @@ class AlgoritmoGenetico:
                 nova_populacao.append(child)
             atualPopulacao = copy.deepcopy(nova_populacao)
             atualPopulacao.sort(key=self.sortSecond)
+            numGeracoes += 1
         self.printMelhoresPopulacao()
 
         print("yay")

@@ -51,7 +51,7 @@ elif metodo == 2:
         a.execute()
     elif teste == 0:
         os.system('cls' if os.name == 'nt' else 'clear')
-        maxPopulacao = int(input("Digite o tamanho máximo da população: "))
+        maxPopulacao = int(input("Digite o tamanho máximo da população(mínimo = 2): "))
         taxaMutacao = float(input("Digite a taxa de mutação(valor entre 0 e 1): "))
         if maxPopulacao < 1 or (taxaMutacao>1.0 or taxaMutacao<0.0):
             print("Dados inválidos")
